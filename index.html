@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Explore Bank Account Options</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f3f6fb;
+      font-family: Arial, sans-serif;
+      color: #17243b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      max-width: 460px;
+      width: 100%;
+      padding: 35px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px #152a4515;
+      text-align: center;
+    }
+    h1 { font-size: 26px; line-height: 1.3; }
+    p { color: #617087; line-height: 1.6; }
+    button {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #1769e0;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #edf2fa;
+      color: #25364e;
+    }
+    button:hover { opacity: .9; }
+    .small { font-size: 12px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+
+<div class="card" id="app"></div>
+
+<script>
+const article = new URL(
+  "https://webwavelet.com/finance/" +
+  "best-bank-account-bonuses-up-to-1-000-en-us/"
+);
+
+const params = {
+  utm_source: "leadgen",
+  headline: "Best Bank Accounts",
+  segment: "rsoc.webwavelet.013",
+  forceKeyA:
+    "Start a Bank Account Online with no Deposit [$300 on Opening]",
+  forceKeyB:
+    "Start a Bank Account Online with no Deposits ($1000 on Opening)",
+  forceKeyC:
+    "Start a Bank Account Online with no Deposit ($1000 on Opening)",
+  forceKeyD:
+    "Instant Cash for Opening Bank Account",
+  forceKeyE:
+    "Banks that Pay You to Open an Account with no Deposit",
+  forceKeyF:
+    "Mobile Banks that Pay You to Open an Account Without Direct Deposit",
+  s1paid: "z_",
+  s1pcid: "z_"
+};
+
+Object.entries(params).forEach(([key, value]) => {
+  article.searchParams.set(key, value);
+});
+
+const app = document.getElementById("app");
+
+function render(title, description, buttons) {
+  app.innerHTML = "";
+
+  const h1 = document.createElement("h1");
+  h1.textContent = title;
+
+  const p = document.createElement("p");
+  p.textContent = description;
+
+  app.append(h1, p);
+
+  buttons.forEach(({ label, action, secondary }) => {
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    if (secondary) btn.className = "secondary";
+    btn.addEventListener("click", action);
+    app.appendChild(btn);
+  });
+}
+
+function stepOne() {
+  render(
+    "Explore Your Banking Options",
+    "Are you interested in opening a new bank account?",
+    [
+      { label: "Yes, I'm interested", action: stepTwo },
+      {
+        label: "No, thanks",
+        action: exitFlow,
+        secondary: true
+      }
+    ]
+  );
+}
+
+function stepTwo() {
+  render(
+    "One Quick Question",
+    "Are you able to set up a direct deposit?",
+    [
+      {
+        label: "Yes",
+        action: qualified
+      },
+      {
+        label: "No",
+        action: alternative,
+        secondary: true
+      }
+    ]
+  );
+}
+
+function qualified() {
+  render(
+    "You're Ready to Explore Options",
+    "You can continue to review available bank account offers.",
+    [
+      {
+        label: "View Bank Account Options",
+        action: alternative
+      }
+    ]
+  );
+}
+
+function alternative() {
+  render(
+    "Explore Alternative Bank Accounts",
+    "You can review an external article about bank account bonuses and options. Offer eligibility and terms vary.",
+    [
+      {
+        label: "View Bank Account Options",
+        action: () => {
+          window.location.assign(article.toString());
+        }
+      },
+      {
+        label: "Back",
+        action: stepTwo,
+        secondary: true
+      }
+    ]
+  );
+}
+
+function exitFlow() {
+  render(
+    "Thanks for Visiting",
+    "You can return whenever you're ready to explore banking options.",
+    [
+      {
+        label: "Start Over",
+        action: stepOne
+      }
+    ]
+  );
+}
+
+stepOne();
+</script>
+
+</body>
+</html>
